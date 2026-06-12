@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflows GHL - OPTIMI GROUP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #070810;
+            --bg-secondary: #0f1119;
+            --bg-card: #131623;
+            --bg-card-hover: #171a27;
+            --accent: #ff6b35;
+            --accent-light: #ff8c5a;
+            --accent-glow: rgba(255, 107, 53, 0.15);
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border: #27272a;
+            --success: #22c55e;
+            --warning: #eab308;
+            --info: #3b82f6;
+            --purple: #a855f7;
+            --pink: #ec4899;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ambient glow */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% 15%, var(--accent-glow), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 85%, rgba(59, 130, 246, 0.08), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            margin-bottom: 60px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--text-primary) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .hero-logo {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 30px var(--accent-glow);
+        }
+
+        .hero-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 40px var(--accent-glow);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 6px 12px;
+            background: var(--accent-glow);
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        /* Workflow Cards */
+        .workflow-grid {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .workflow-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 107, 53, 0.3);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .workflow-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .workflow-badge {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .workflow-info {
+            flex: 1;
+        }
+
+        .workflow-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .workflow-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .workflow-status {
+            padding: 6px 14px;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Trigger Box */
+        .trigger-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--info);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .trigger-box strong {
+            color: var(--info);
+        }
+
+        /* Email Table */
+        .email-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .email-table th {
+            background: var(--bg-secondary);
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'JetBrains Mono', monospace;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .email-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .email-table tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        .timing-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--accent);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Action Box */
+        .action-box {
+            background: rgba(255, 107, 53, 0.08);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .action-box-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-box-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .action-list {
+            list-style: none;
+        }
+
+        .action-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .action-list li:last-child {
+            border-bottom: none;
+        }
+
+        .action-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .priority-high { color: #ef4444; font-weight: 600; }
+        .priority-medium { color: #eab308; font-weight: 600; }
+        .priority-low { color: #3b82f6; }
+
+        /* Outbound Section */
+        .outbound-card {
+            background: var(--bg-card);
+            border: 1px solid var(--warning);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .outbound-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .outbound-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--warning) 0%, #f59e0b 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .outbound-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Summary Table */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .summary-table th {
+            background: var(--bg-secondary);
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .summary-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .summary-table tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        /* Global Action Plan */
+        .action-plan-card {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .action-plan-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-plan-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .footer-info {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .info-box strong {
+            color: var(--info);
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .warning-box strong {
+            color: var(--warning);
+        }
+
+        /* Success Box */
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .success-box strong {
+            color: var(--success);
+        }
+
+        /* TOC Navigation */
+        .toc {
+            position: sticky;
+            top: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(14px);
+        }
+
+        .toc-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .toc-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .toc-chip {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toc-chip:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .toc-chip span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 30px 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero { padding: 40px 0; }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: #333;
+            }
+            body::before, body::after { display: none; }
+            .workflow-card, .stat-card, .action-box, .toc {
+                background: #f5f5f5;
+                border-color: #ddd;
+            }
+            .stat-number, .workflow-badge, .hero-logo {
+                color: #ff6b35;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">Mai - Juin 2026</div>
+        <h1>Workflows GHL</h1>
+        <p class="hero-subtitle">Synthese des workflows et templates emails crees dans GoHighLevel pour le programme Coaching Airbnb et la Conciergerie OPTIMI.</p>
+        <div class="hero-logo">OPTIMI GROUP</div>
+        <p class="hero-date">Document genere le 12 Juin 2026</p>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">8</div>
+            <div class="stat-label">Workflows</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">42</div>
+            <div class="stat-label">Emails</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Publies</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">15</div>
+            <div class="stat-label">Actions</div>
+        </div>
+    </section>
+
+    <!-- TOC -->
+    <nav class="toc">
+        <div class="toc-title">Navigation rapide</div>
+        <div class="toc-list">
+            <a href="#overview" class="toc-chip"><span>01</span> Vue d'ensemble</a>
+            <a href="#inbound" class="toc-chip"><span>02</span> Workflows Inbound</a>
+            <a href="#outbound" class="toc-chip"><span>03</span> Sequences Outbound</a>
+            <a href="#templates" class="toc-chip"><span>04</span> Templates</a>
+            <a href="#actions" class="toc-chip"><span>05</span> Plan d'action</a>
+        </div>
+    </nav>
+
+    <!-- Section 1: Overview -->
+    <section id="overview">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2 class="section-title">Vue d'ensemble</h2>
+        </div>
+
+        <div class="success-box">
+            <strong>Total :</strong> 27 emails inbound (W1-W6) + 15 emails outbound (A/B/C) = <strong>42 templates</strong>
+        </div>
+
+        <table class="summary-table" style="margin-bottom: 40px;">
+            <tr>
+                <th>#</th>
+                <th>Workflow</th>
+                <th>Emails</th>
+                <th>Date</th>
+                <th>Statut</th>
+            </tr>
+            <tr><td>Wh</td><td>Inbound Webhook (All Forms)</td><td>-</td><td>6 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W1</td><td>Welcome Guide DL</td><td>5</td><td>13 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W2</td><td>Coaching Audit Lead</td><td>4</td><td>13 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W3</td><td>Pre-RDV Reminder</td><td>4</td><td>13 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W4</td><td>Post-RDV No-Show</td><td>4</td><td>14 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W5a</td><td>Onboarding Coaching</td><td>3</td><td>14 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W5b</td><td>Onboarding Conciergerie</td><td>3</td><td>14 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+            <tr><td>W6</td><td>Reactivation 90j inactif</td><td>4</td><td>14 Mai</td><td><span class="workflow-status">Publie</span></td></tr>
+        </table>
+    </section>
+
+    <!-- Section 2: Inbound Workflows -->
+    <section id="inbound">
+        <div class="section-header">
+            <span class="section-number">02</span>
+            <h2 class="section-title">Workflows Inbound</h2>
+        </div>
+
+        <div class="workflow-grid">
+            <!-- W1 -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W1</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Welcome Guide DL</div>
+                        <div class="workflow-meta">5 emails sur 7 jours | 13 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> Telechargement du guide "Rentabilite Airbnb"
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Contenu</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W1-E1 : Livraison guide</td><td>Envoi PDF + bienvenue</td></tr>
+                    <tr><td><span class="timing-badge">J+1</span></td><td>W1-E2 : Histoire Marc Paris 11e</td><td>Case study +42% revenus</td></tr>
+                    <tr><td><span class="timing-badge">J+3</span></td><td>W1-E3 : 3 erreurs ROI</td><td>Contenu educatif</td></tr>
+                    <tr><td><span class="timing-badge">J+5</span></td><td>W1-E4 : Calculateur ROI</td><td>Invitation outil interactif</td></tr>
+                    <tr><td><span class="timing-badge">J+7</span></td><td>W1-E5 : CTA coaching</td><td>Invitation appel decouverte</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W1</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Lien PDF guide</span> - Verifier que le lien de telechargement fonctionne</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Lien Calendly</span> - Ajouter dans E5 le lien de booking</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Lien calculateur</span> - Creer ou integrer l'outil ROI dans E4</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- W2 -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W2</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Coaching Audit Lead</div>
+                        <div class="workflow-meta">4 emails sur 7 jours | 13 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> Formulaire demande d'audit gratuit
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Contenu</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W2-E1 : Simulation detaillee</td><td>Projections revenus personnalisees</td></tr>
+                    <tr><td><span class="timing-badge">J+1</span></td><td>W2-E2 : Credibilite chiffres</td><td>Methodologie basee sur 200+ biens</td></tr>
+                    <tr><td><span class="timing-badge">J+3</span></td><td>W2-E3 : Case study Sophie Lyon</td><td>Temoignage +35% revenus</td></tr>
+                    <tr><td><span class="timing-badge">J+7</span></td><td>W2-E4 : CTA coaching</td><td>Invitation discussion audit</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W2</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Custom field simulation</span> - Creer champ pour inserer les donnees</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Lien Calendly</span> - Ajouter dans E4</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- W3 -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W3</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Pre-RDV Reminder</div>
+                        <div class="workflow-meta">4 emails sur 3 jours | 13 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> Candidature coaching ou demande audit
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Contenu</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W3-E1 : Confirmation audit</td><td>Reception + processus</td></tr>
+                    <tr><td><span class="timing-badge">J+1</span></td><td>W3-E2 : Audit livre</td><td>Video Loom personnalisee</td></tr>
+                    <tr><td><span class="timing-badge">J+2</span></td><td>W3-E3 : Relance vision</td><td>"Tu as regarde l'audit ?"</td></tr>
+                    <tr><td><span class="timing-badge">J+3</span></td><td>W3-E4 : CTA call</td><td>Push booking appel</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W3</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Custom field Loom</span> - Creer champ {{contact.loom_audit_url}}</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Process Boubacar</span> - Former a remplir le lien Loom avant J+1</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Condition workflow</span> - Bloquer E2 si champ Loom vide</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Lien Calendly</span> - Ajouter dans E4</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- W4 -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W4</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Post-RDV No-Show</div>
+                        <div class="workflow-meta">4 emails conditionnels sur 3 jours | 14 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> Candidature sans reservation Calendly
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Condition</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W4-E1 : Confirmation</td><td>Toujours envoye</td></tr>
+                    <tr><td><span class="timing-badge">+30m</span></td><td>W4-E2 : Reminder Calendly</td><td>SI pas booke</td></tr>
+                    <tr><td><span class="timing-badge">J+1</span></td><td>W4-E3 : Case study Karim</td><td>SI pas booke</td></tr>
+                    <tr><td><span class="timing-badge">J+3</span></td><td>W4-E4 : Derniere chance</td><td>SI pas booke</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W4</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Condition "booked"</span> - Creer tag ou custom field pour detecter booking</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Integration Calendly</span> - Webhook Calendly -> GHL pour tag auto</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Lien Calendly</span> - Ajouter dans E2, E3, E4</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Branchement W4->W5a</span> - Si booke, sortir vers onboarding</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- W5a -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W5a</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Onboarding Coaching</div>
+                        <div class="workflow-meta">3 emails no-show | 14 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> No-show detecte client coaching
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Contenu</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W5-E1 : Re-booking</td><td>Invitation immediate rebooker</td></tr>
+                    <tr><td><span class="timing-badge">J+1</span></td><td>W5-E2 : Second touch</td><td>Ton empathique</td></tr>
+                    <tr><td><span class="timing-badge">J+3</span></td><td>W5-E3 : Derniere chance</td><td>Avant escalade manuelle</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W5a</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Trigger no-show</span> - Configurer detection no-show Calendly/GHL</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Notification equipe</span> - Alerte si E3 envoye sans reponse</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- W5b -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W5b</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Onboarding Conciergerie</div>
+                        <div class="workflow-meta">3 emails sur 14 jours | 14 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> Signature mandat conciergerie
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Contenu</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W5b-E1 : Bienvenue</td><td>Presentation equipe + prochaines etapes</td></tr>
+                    <tr><td><span class="timing-badge">J+7</span></td><td>W5b-E2 : Suivi S1</td><td>Satisfaction + questions</td></tr>
+                    <tr><td><span class="timing-badge">J+14</span></td><td>W5b-E3 : Suivi S2</td><td>Premiers resultats + feedback</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W5b</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Trigger signature</span> - Tag "client-conciergerie" a la signature</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Lien formulaire feedback</span> - Creer formulaire satisfaction</li>
+                        <li><div class="action-checkbox"></div><span class="priority-low">Personnalisation equipe</span> - Photo/nom du contact dedie</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- W6 -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">W6</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Reactivation 90j inactif</div>
+                        <div class="workflow-meta">4 emails sur 10 jours | 14 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="trigger-box">
+                    <strong>Declencheur :</strong> Tag automatique "inactif-90j"
+                </div>
+
+                <table class="email-table">
+                    <tr><th>Timing</th><th>Email</th><th>Contenu</th></tr>
+                    <tr><td><span class="timing-badge">J0</span></td><td>W6-E1 : "Perdu en route ?"</td><td>Re-engagement amical</td></tr>
+                    <tr><td><span class="timing-badge">J+3</span></td><td>W6-E2 : Marche 2026</td><td>Urgence reglementaire Paris</td></tr>
+                    <tr><td><span class="timing-badge">J+7</span></td><td>W6-E3 : Case study + CTA</td><td>Preuve sociale finale</td></tr>
+                    <tr><td><span class="timing-badge">J+10</span></td><td>W6-E4 : Goodbye</td><td>Cloture respectueuse</td></tr>
+                </table>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action W6</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Automation tag 90j</span> - Creer workflow auto-tagging inactivite</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Sortie si reponse</span> - Condition sortie vers W2/W3 si clic/reponse</li>
+                        <li><div class="action-checkbox"></div><span class="priority-low">Tag archive</span> - Ajouter tag "archive" apres E4</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Webhook -->
+            <div class="workflow-card">
+                <div class="workflow-header">
+                    <div class="workflow-badge">Wh</div>
+                    <div class="workflow-info">
+                        <div class="workflow-name">Inbound Webhook (All Forms)</div>
+                        <div class="workflow-meta">Point d'entree centralise | 6 Mai 2026</div>
+                    </div>
+                    <span class="workflow-status">Publie</span>
+                </div>
+
+                <div class="info-box">
+                    <strong>Role :</strong> Recoit TOUS les formulaires entrants et dispatch vers W1, W2, W3 selon la source.
+                </div>
+
+                <div class="action-box">
+                    <div class="action-box-title">Plan d'action Webhook</div>
+                    <ul class="action-list">
+                        <li><div class="action-checkbox"></div><span class="priority-high">Mapping formulaires</span> - Lister tous les formulaires et leur routing</li>
+                        <li><div class="action-checkbox"></div><span class="priority-high">Condition source</span> - If form = "guide" -> W1 / If form = "audit" -> W2</li>
+                        <li><div class="action-checkbox"></div><span class="priority-medium">Test end-to-end</span> - Tester chaque formulaire -> workflow</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Outbound -->
+    <section id="outbound">
+        <div class="section-header">
+            <span class="section-number">03</span>
+            <h2 class="section-title">Sequences Outbound</h2>
+        </div>
+
+        <div class="warning-box">
+            <strong>Important :</strong> Ces templates sont dans GHL mais necessitent un outil externe (Instantly, Smartlead) pour l'envoi cold email a volume.
+        </div>
+
+        <!-- Outbound A -->
+        <div class="outbound-card">
+            <div class="outbound-header">
+                <div class="outbound-icon">A</div>
+                <div class="outbound-title">Sequence A : Proprietaires existants</div>
+            </div>
+            <table class="email-table">
+                <tr><th>J</th><th>Email</th><th>Angle</th></tr>
+                <tr><td><span class="timing-badge">0</span></td><td>Out A-E1 : Hook</td><td>Accroche personnalisee annonce</td></tr>
+                <tr><td><span class="timing-badge">+3</span></td><td>Out A-E2 : Value</td><td>Conseil actionnable gratuit</td></tr>
+                <tr><td><span class="timing-badge">+7</span></td><td>Out A-E3 : Case study</td><td>Resultats client Marc</td></tr>
+                <tr><td><span class="timing-badge">+11</span></td><td>Out A-E4 : Audit Loom</td><td>Offre audit video gratuit</td></tr>
+                <tr><td><span class="timing-badge">+15</span></td><td>Out A-E5 : Break-up</td><td>Derniere chance</td></tr>
+            </table>
+        </div>
+
+        <!-- Outbound B -->
+        <div class="outbound-card">
+            <div class="outbound-header">
+                <div class="outbound-icon">B</div>
+                <div class="outbound-title">Sequence B : Operateurs multi-biens</div>
+            </div>
+            <table class="email-table">
+                <tr><th>J</th><th>Email</th><th>Angle</th></tr>
+                <tr><td><span class="timing-badge">0</span></td><td>Out B-E1 : Operateur</td><td>Reconnaissance statut</td></tr>
+                <tr><td><span class="timing-badge">+3</span></td><td>Out B-E2 : Mur 5 biens</td><td>Probleme scaling</td></tr>
+                <tr><td><span class="timing-badge">+7</span></td><td>Out B-E3 : Calcul</td><td>ROI delegation</td></tr>
+                <tr><td><span class="timing-badge">+11</span></td><td>Out B-E4 : Methode 360</td><td>Framework ops</td></tr>
+                <tr><td><span class="timing-badge">+15</span></td><td>Out B-E5 : Break-up</td><td>Suggestion alternative</td></tr>
+            </table>
+        </div>
+
+        <!-- Outbound C -->
+        <div class="outbound-card">
+            <div class="outbound-header">
+                <div class="outbound-icon">C</div>
+                <div class="outbound-title">Sequence C : Investisseurs LMNP</div>
+            </div>
+            <table class="email-table">
+                <tr><th>J</th><th>Email</th><th>Angle</th></tr>
+                <tr><td><span class="timing-badge">0</span></td><td>Out C-E1 : Felicitations</td><td>Opportunite LCD</td></tr>
+                <tr><td><span class="timing-badge">+3</span></td><td>Out C-E2 : Fiscalite</td><td>Avantages LMNP</td></tr>
+                <tr><td><span class="timing-badge">+7</span></td><td>Out C-E3 : Comparatif</td><td>Airbnb vs bail mobilite</td></tr>
+                <tr><td><span class="timing-badge">+11</span></td><td>Out C-E4 : Garantie</td><td>Accompagnement 1er bien</td></tr>
+                <tr><td><span class="timing-badge">+15</span></td><td>Out C-E5 : Break-up</td><td>Ressource gratuite</td></tr>
+            </table>
+        </div>
+
+        <div class="action-box" style="margin-top: 24px;">
+            <div class="action-box-title">Plan d'action Outbound</div>
+            <ul class="action-list">
+                <li><div class="action-checkbox"></div><span class="priority-high">Choix outil</span> - Decider entre Instantly / Smartlead / Lemlist</li>
+                <li><div class="action-checkbox"></div><span class="priority-high">Setup domaine</span> - Configurer domaine secondaire pour cold email</li>
+                <li><div class="action-checkbox"></div><span class="priority-high">Warmup</span> - 2-3 semaines warmup avant envoi</li>
+                <li><div class="action-checkbox"></div><span class="priority-medium">Import templates</span> - Copier les 15 emails dans l'outil</li>
+                <li><div class="action-checkbox"></div><span class="priority-medium">Listes prospects</span> - Preparer CSV par segment (A/B/C)</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Section 4: Templates Summary -->
+    <section id="templates" style="margin-top: 60px;">
+        <div class="section-header">
+            <span class="section-number">04</span>
+            <h2 class="section-title">Recapitulatif des 42 Templates</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+            <div>
+                <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 16px;">Templates Inbound (27)</h3>
+                <table class="summary-table">
+                    <tr><th>WF</th><th>ID</th><th>Timing</th><th>Sujet</th></tr>
+                    <tr><td>W1</td><td>W1-E1</td><td>J0</td><td>Livraison du guide</td></tr>
+                    <tr><td>W1</td><td>W1-E2</td><td>J+1</td><td>Histoire Marc</td></tr>
+                    <tr><td>W1</td><td>W1-E3</td><td>J+3</td><td>3 erreurs ROI</td></tr>
+                    <tr><td>W1</td><td>W1-E4</td><td>J+5</td><td>Calculateur ROI</td></tr>
+                    <tr><td>W1</td><td>W1-E5</td><td>J+7</td><td>CTA coaching</td></tr>
+                    <tr><td>W2</td><td>W2-E1</td><td>J0</td><td>Simulation</td></tr>
+                    <tr><td>W2</td><td>W2-E2</td><td>J+1</td><td>Credibilite</td></tr>
+                    <tr><td>W2</td><td>W2-E3</td><td>J+3</td><td>Case study Sophie</td></tr>
+                    <tr><td>W2</td><td>W2-E4</td><td>J+7</td><td>CTA coaching</td></tr>
+                    <tr><td>W3</td><td>W3-E1</td><td>J0</td><td>Confirmation</td></tr>
+                    <tr><td>W3</td><td>W3-E2</td><td>J+1</td><td>Audit Loom</td></tr>
+                    <tr><td>W3</td><td>W3-E3</td><td>J+2</td><td>Relance</td></tr>
+                    <tr><td>W3</td><td>W3-E4</td><td>J+3</td><td>CTA call</td></tr>
+                    <tr><td>W4</td><td>W4-E1</td><td>J0</td><td>Confirmation</td></tr>
+                    <tr><td>W4</td><td>W4-E2</td><td>+30m</td><td>Reminder</td></tr>
+                    <tr><td>W4</td><td>W4-E3</td><td>J+1</td><td>Case study Karim</td></tr>
+                    <tr><td>W4</td><td>W4-E4</td><td>J+3</td><td>Derniere chance</td></tr>
+                    <tr><td>W5a</td><td>W5-E1</td><td>J0</td><td>Re-booking</td></tr>
+                    <tr><td>W5a</td><td>W5-E2</td><td>J+1</td><td>Second touch</td></tr>
+                    <tr><td>W5a</td><td>W5-E3</td><td>J+3</td><td>Derniere chance</td></tr>
+                    <tr><td>W5b</td><td>W5b-E1</td><td>J0</td><td>Onboard</td></tr>
+                    <tr><td>W5b</td><td>W5b-E2</td><td>J+7</td><td>Suivi S1</td></tr>
+                    <tr><td>W5b</td><td>W5b-E3</td><td>J+14</td><td>Suivi S2</td></tr>
+                    <tr><td>W6</td><td>W6-E1</td><td>J0</td><td>Perdu en route</td></tr>
+                    <tr><td>W6</td><td>W6-E2</td><td>J+3</td><td>Marche 2026</td></tr>
+                    <tr><td>W6</td><td>W6-E3</td><td>J+7</td><td>Case study</td></tr>
+                    <tr><td>W6</td><td>W6-E4</td><td>J+10</td><td>Goodbye</td></tr>
+                </table>
+            </div>
+            <div>
+                <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 16px;">Templates Outbound (15)</h3>
+                <table class="summary-table">
+                    <tr><th>Seq</th><th>ID</th><th>J</th><th>Sujet</th></tr>
+                    <tr><td>A</td><td>A-E1</td><td>0</td><td>Hook observation</td></tr>
+                    <tr><td>A</td><td>A-E2</td><td>+3</td><td>Value bomb</td></tr>
+                    <tr><td>A</td><td>A-E3</td><td>+7</td><td>Case study Marc</td></tr>
+                    <tr><td>A</td><td>A-E4</td><td>+11</td><td>Audit Loom</td></tr>
+                    <tr><td>A</td><td>A-E5</td><td>+15</td><td>Break-up</td></tr>
+                    <tr><td>B</td><td>B-E1</td><td>0</td><td>Operateur</td></tr>
+                    <tr><td>B</td><td>B-E2</td><td>+3</td><td>Mur 5 biens</td></tr>
+                    <tr><td>B</td><td>B-E3</td><td>+7</td><td>Calcul</td></tr>
+                    <tr><td>B</td><td>B-E4</td><td>+11</td><td>Methode 360</td></tr>
+                    <tr><td>B</td><td>B-E5</td><td>+15</td><td>Break-up</td></tr>
+                    <tr><td>C</td><td>C-E1</td><td>0</td><td>Felicitations</td></tr>
+                    <tr><td>C</td><td>C-E2</td><td>+3</td><td>Fiscalite</td></tr>
+                    <tr><td>C</td><td>C-E3</td><td>+7</td><td>Comparatif</td></tr>
+                    <tr><td>C</td><td>C-E4</td><td>+11</td><td>Garantie</td></tr>
+                    <tr><td>C</td><td>C-E5</td><td>+15</td><td>Break-up</td></tr>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Global Action Plan -->
+    <section id="actions" style="margin-top: 60px;">
+        <div class="section-header">
+            <span class="section-number">05</span>
+            <h2 class="section-title">Plan d'Action Global</h2>
+        </div>
+
+        <div class="action-plan-card">
+            <div class="action-plan-title">
+                <div class="action-plan-icon">!</div>
+                Actions prioritaires (a faire en premier)
+            </div>
+            <table class="summary-table">
+                <tr><th>#</th><th>Workflow</th><th>Action</th><th>Responsable</th></tr>
+                <tr><td>1</td><td>TOUS</td><td><span class="priority-high">Ajouter liens Calendly</span> dans tous les emails CTA</td><td>Jean-Marc</td></tr>
+                <tr><td>2</td><td>W3</td><td><span class="priority-high">Creer custom field</span> {{contact.loom_audit_url}}</td><td>Jean-Marc</td></tr>
+                <tr><td>3</td><td>W3</td><td><span class="priority-high">Former Boubacar</span> au process audit Loom</td><td>Jean-Marc + Boubacar</td></tr>
+                <tr><td>4</td><td>W4</td><td><span class="priority-high">Integration Calendly->GHL</span> webhook booking</td><td>Jean-Marc</td></tr>
+                <tr><td>5</td><td>Wh</td><td><span class="priority-high">Mapper formulaires->workflows</span></td><td>Jean-Marc</td></tr>
+            </table>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="workflow-card">
+                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--warning);">Actions secondaires</h3>
+                <table class="summary-table">
+                    <tr><th>#</th><th>WF</th><th>Action</th></tr>
+                    <tr><td>6</td><td>W1</td><td><span class="priority-medium">Creer calculateur ROI</span></td></tr>
+                    <tr><td>7</td><td>W6</td><td><span class="priority-medium">Automation tag 90j inactif</span></td></tr>
+                    <tr><td>8</td><td>W5a</td><td><span class="priority-medium">Config detection no-show</span></td></tr>
+                    <tr><td>9</td><td>W5b</td><td><span class="priority-medium">Formulaire satisfaction</span></td></tr>
+                    <tr><td>10</td><td>Out</td><td><span class="priority-medium">Choisir outil cold email</span></td></tr>
+                </table>
+            </div>
+            <div class="workflow-card">
+                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--info);">Actions a planifier</h3>
+                <table class="summary-table">
+                    <tr><th>#</th><th>WF</th><th>Action</th></tr>
+                    <tr><td>11</td><td>Out</td><td><span class="priority-low">Setup domaine secondaire</span></td></tr>
+                    <tr><td>12</td><td>Out</td><td><span class="priority-low">Warmup 2-3 semaines</span></td></tr>
+                    <tr><td>13</td><td>Out</td><td><span class="priority-low">Preparer listes CSV</span></td></tr>
+                    <tr><td>14</td><td>TOUS</td><td><span class="priority-low">Test end-to-end</span></td></tr>
+                    <tr><td>15</td><td>W5b</td><td><span class="priority-low">Personnalisation equipe</span></td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="success-box" style="margin-top: 32px;">
+            <strong>Resume :</strong> 5 actions prioritaires | 5 actions secondaires | 5 actions a planifier<br>
+            <strong>Focus immediat :</strong> Liens Calendly + Custom fields + Integration webhook
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">OPTIMI GROUP</div>
+        <div class="footer-info">
+            Jean-Marc TAOUO | contactoptgroup@gmail.com | 06 12 78 49 32<br>
+            Document genere le 12 Juin 2026
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
