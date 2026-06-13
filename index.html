@@ -7,46 +7,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #070810;
-            --bg-secondary: #0f1119;
-            --bg-card: #131623;
-            --bg-card-hover: #171a27;
+            --bg: #070810;
+            --card: #0f1119;
+            --card2: #131623;
+            --text: #f4f4f5;
+            --text2: #a1a1aa;
+            --text3: #71717a;
+            --border: #242838;
             --accent: #ff6b35;
-            --accent-light: #ff8c5a;
-            --accent-glow: rgba(255, 107, 53, 0.15);
-            --text-primary: #f4f4f5;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --border: #27272a;
-            --success: #22c55e;
-            --warning: #eab308;
-            --info: #3b82f6;
-            --purple: #a855f7;
-            --pink: #ec4899;
+
+            /* Section colors */
+            --p1: #a78bfa; /* Overview - Purple */
+            --p2: #60a5fa; /* Inbound - Blue */
+            --p3: #22c55e; /* Outbound - Green */
+            --p4: #f59e0b; /* Templates - Amber */
+            --p5: #ef4444; /* Actions - Red */
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
         }
 
-        /* Noise overlay */
+        /* Noise texture */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
             opacity: 0.025;
             pointer-events: none;
@@ -57,92 +49,161 @@
         body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background:
-                radial-gradient(ellipse 80% 50% at 50% 15%, var(--accent-glow), transparent),
-                radial-gradient(ellipse 60% 40% at 80% 85%, rgba(59, 130, 246, 0.08), transparent);
+                radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 107, 53, 0.12), transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(96, 165, 250, 0.08), transparent);
             pointer-events: none;
             z-index: 0;
         }
 
-        .container {
+        .wrap {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 0 40px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
-        /* Hero Section */
+        /* ═══════════════ HERO ═══════════════ */
         .hero {
             text-align: center;
-            padding: 80px 0;
-            margin-bottom: 60px;
+            padding: 100px 0 80px;
         }
 
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 24px;
-            font-family: 'JetBrains Mono', monospace;
+        .hero-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent) 0%, #ff8c5a 100%);
+            border-radius: 24px;
+            margin-bottom: 32px;
+            box-shadow:
+                0 0 60px rgba(255, 107, 53, 0.25),
+                0 14px 36px rgba(0,0,0,0.35),
+                inset 0 0 0 1px rgba(255,255,255,0.06);
+        }
+
+        .hero-mark span {
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.02em;
         }
 
         .hero h1 {
-            font-size: clamp(40px, 6vw, 72px);
+            font-size: clamp(40px, 6vw, 80px);
             font-weight: 900;
             letter-spacing: -0.04em;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--text-primary) 100%);
+            line-height: 1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--text) 100%);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: shimmer 5s linear infinite;
+            animation: shimmerText 5s linear infinite;
         }
 
-        @keyframes shimmer {
+        @keyframes shimmerText {
             0% { background-position: 0% center; }
             100% { background-position: 200% center; }
         }
 
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
+        .hero-sub {
+            font-size: clamp(18px, 2.2vw, 24px);
+            color: var(--text2);
+            max-width: 700px;
             margin: 0 auto 32px;
+            font-weight: 500;
         }
 
-        .hero-logo {
-            display: inline-block;
-            padding: 16px 40px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            border-radius: 12px;
-            font-size: 24px;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 32px;
-            box-shadow: 0 4px 30px var(--accent-glow);
-        }
-
-        .hero-date {
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text3);
         }
 
-        /* Stats Grid */
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-meta .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* ═══════════════ TOC BAR ═══════════════ */
+        .toc-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(15, 17, 25, 0.85);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .toc-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .toc-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .toc-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text2);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .toc-chip:hover {
+            border-color: var(--c, var(--accent));
+            color: var(--text);
+            transform: translateY(-1px);
+        }
+
+        .toc-chip .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--c, var(--accent));
+        }
+
+        /* ═══════════════ STATS GRID ═══════════════ */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -151,7 +212,7 @@
         }
 
         .stat-card {
-            background: var(--bg-card);
+            background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 28px;
@@ -162,7 +223,7 @@
         .stat-card:hover {
             transform: translateY(-4px);
             border-color: var(--accent);
-            box-shadow: 0 8px 40px var(--accent-glow);
+            box-shadow: 0 8px 40px rgba(255, 107, 53, 0.15);
         }
 
         .stat-number {
@@ -174,46 +235,63 @@
         }
 
         .stat-label {
-            font-size: 13px;
-            color: var(--text-muted);
+            font-size: 12px;
+            color: var(--text3);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Section Headers */
-        .section-header {
+        /* ═══════════════ PART SECTIONS ═══════════════ */
+        .part {
+            margin-bottom: 80px;
+            --c: var(--accent);
+        }
+
+        .part-head {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
+            padding: 24px 28px;
+            background: linear-gradient(135deg,
+                color-mix(in oklab, var(--c) 12%, transparent),
+                transparent 70%);
+            border: 1px solid color-mix(in oklab, var(--c) 25%, var(--border));
+            border-radius: 16px;
             margin-bottom: 32px;
         }
 
-        .section-number {
+        .part-num {
             font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
-            font-weight: 600;
-            color: var(--accent);
-            padding: 6px 12px;
-            background: var(--accent-glow);
+            font-weight: 700;
+            color: var(--c);
+            padding: 8px 14px;
+            background: color-mix(in oklab, var(--c) 15%, transparent);
             border-radius: 8px;
         }
 
-        .section-title {
+        .part-title {
             font-size: 28px;
             font-weight: 800;
-            color: var(--text-primary);
+            color: var(--text);
         }
 
-        /* Workflow Cards */
+        .part-count {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text3);
+        }
+
+        /* ═══════════════ WORKFLOW CARDS ═══════════════ */
         .workflow-grid {
             display: grid;
             gap: 24px;
-            margin-bottom: 60px;
         }
 
         .workflow-card {
-            background: var(--bg-card);
+            background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 28px;
@@ -222,7 +300,7 @@
 
         .workflow-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(255, 107, 53, 0.3);
+            border-color: color-mix(in oklab, var(--c) 40%, var(--border));
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
 
@@ -236,10 +314,10 @@
         }
 
         .workflow-badge {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-            border-radius: 12px;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--c) 0%, color-mix(in oklab, var(--c) 70%, white) 100%);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -247,52 +325,50 @@
             font-size: 16px;
             color: white;
             flex-shrink: 0;
+            box-shadow: 0 4px 20px color-mix(in oklab, var(--c) 30%, transparent);
         }
 
-        .workflow-info {
-            flex: 1;
-        }
+        .workflow-info { flex: 1; }
 
         .workflow-name {
             font-size: 18px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text);
             margin-bottom: 4px;
         }
 
         .workflow-meta {
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text3);
             font-family: 'JetBrains Mono', monospace;
         }
 
         .workflow-status {
             padding: 6px 14px;
             background: rgba(34, 197, 94, 0.15);
-            color: var(--success);
+            color: #22c55e;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        /* Trigger Box */
+        /* Trigger box */
         .trigger-box {
-            background: var(--bg-secondary);
+            background: var(--card2);
             border: 1px solid var(--border);
-            border-left: 3px solid var(--info);
+            border-left: 3px solid #3b82f6;
             border-radius: 8px;
             padding: 14px 18px;
             margin-bottom: 20px;
             font-size: 14px;
+            color: var(--text2);
         }
 
-        .trigger-box strong {
-            color: var(--info);
-        }
+        .trigger-box strong { color: #60a5fa; }
 
-        /* Email Table */
+        /* Email table */
         .email-table {
             width: 100%;
             border-collapse: collapse;
@@ -300,12 +376,12 @@
         }
 
         .email-table th {
-            background: var(--bg-secondary);
+            background: var(--card2);
             padding: 12px 16px;
             text-align: left;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--text3);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             font-family: 'JetBrains Mono', monospace;
@@ -316,28 +392,28 @@
             padding: 14px 16px;
             border-bottom: 1px solid var(--border);
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--text2);
         }
 
         .email-table tr:hover td {
-            background: var(--bg-secondary);
+            background: var(--card2);
         }
 
         .timing-badge {
             display: inline-block;
             padding: 4px 10px;
-            background: var(--accent);
+            background: var(--c, var(--accent));
             color: white;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Action Box */
+        /* Action box */
         .action-box {
-            background: rgba(255, 107, 53, 0.08);
-            border: 1px solid rgba(255, 107, 53, 0.2);
+            background: color-mix(in oklab, var(--c) 8%, transparent);
+            border: 1px solid color-mix(in oklab, var(--c) 20%, transparent);
             border-radius: 12px;
             padding: 20px;
         }
@@ -345,7 +421,7 @@
         .action-box-title {
             font-size: 14px;
             font-weight: 700;
-            color: var(--accent);
+            color: var(--c);
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -356,7 +432,7 @@
             content: '';
             width: 8px;
             height: 8px;
-            background: var(--accent);
+            background: var(--c);
             border-radius: 50%;
         }
 
@@ -370,13 +446,11 @@
             gap: 12px;
             padding: 10px 0;
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--text2);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .action-list li:last-child {
-            border-bottom: none;
-        }
+        .action-list li:last-child { border-bottom: none; }
 
         .action-checkbox {
             width: 18px;
@@ -391,10 +465,47 @@
         .priority-medium { color: #eab308; font-weight: 600; }
         .priority-low { color: #3b82f6; }
 
-        /* Outbound Section */
+        /* ═══════════════ INFO BOXES ═══════════════ */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text2);
+        }
+
+        .info-box strong { color: #60a5fa; }
+
+        .success-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text2);
+        }
+
+        .success-box strong { color: #22c55e; }
+
+        .warning-box {
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--text2);
+        }
+
+        .warning-box strong { color: #eab308; }
+
+        /* ═══════════════ OUTBOUND SECTION ═══════════════ */
         .outbound-card {
-            background: var(--bg-card);
-            border: 1px solid var(--warning);
+            background: var(--card);
+            border: 1px solid color-mix(in oklab, var(--c) 40%, var(--border));
             border-radius: 16px;
             padding: 28px;
             margin-bottom: 24px;
@@ -408,22 +519,25 @@
         }
 
         .outbound-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--warning) 0%, #f59e0b 100%);
-            border-radius: 10px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--c) 0%, color-mix(in oklab, var(--c) 70%, white) 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: white;
         }
 
         .outbound-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text);
         }
 
-        /* Summary Table */
+        /* ═══════════════ SUMMARY TABLES ═══════════════ */
         .summary-table {
             width: 100%;
             border-collapse: collapse;
@@ -431,12 +545,12 @@
         }
 
         .summary-table th {
-            background: var(--bg-secondary);
+            background: var(--card2);
             padding: 10px 14px;
             text-align: left;
             font-size: 10px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--text3);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             font-family: 'JetBrains Mono', monospace;
@@ -445,17 +559,19 @@
         .summary-table td {
             padding: 10px 14px;
             border-bottom: 1px solid var(--border);
-            color: var(--text-secondary);
+            color: var(--text2);
         }
 
         .summary-table tr:nth-child(even) {
-            background: var(--bg-secondary);
+            background: var(--card2);
         }
 
-        /* Global Action Plan */
+        /* ═══════════════ ACTION PLAN SECTION ═══════════════ */
         .action-plan-card {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
-            border: 1px solid rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg,
+                color-mix(in oklab, var(--c) 12%, transparent) 0%,
+                color-mix(in oklab, var(--p1) 5%, transparent) 100%);
+            border: 1px solid color-mix(in oklab, var(--c) 30%, var(--border));
             border-radius: 16px;
             padding: 32px;
             margin-bottom: 32px;
@@ -464,7 +580,7 @@
         .action-plan-title {
             font-size: 18px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text);
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -472,175 +588,147 @@
         }
 
         .action-plan-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--accent);
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            background: var(--c);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 800;
         }
 
-        /* Footer */
+        /* ═══════════════ TWO COLUMN GRID ═══════════════ */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .col-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        /* ═══════════════ FOOTER ═══════════════ */
         .footer {
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0;
             border-top: 1px solid var(--border);
-            margin-top: 60px;
+            margin-top: 80px;
         }
 
         .footer-logo {
-            font-size: 20px;
-            font-weight: 800;
+            font-size: 24px;
+            font-weight: 900;
             color: var(--accent);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
         }
 
         .footer-info {
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text3);
             font-family: 'JetBrains Mono', monospace;
+            line-height: 1.8;
         }
 
-        /* Info Box */
-        .info-box {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .info-box strong {
-            color: var(--info);
-        }
-
-        /* Warning Box */
-        .warning-box {
-            background: rgba(234, 179, 8, 0.1);
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .warning-box strong {
-            color: var(--warning);
-        }
-
-        /* Success Box */
-        .success-box {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .success-box strong {
-            color: var(--success);
-        }
-
-        /* TOC Navigation */
-        .toc {
-            position: sticky;
-            top: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            backdrop-filter: blur(14px);
-        }
-
-        .toc-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .toc-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .toc-chip {
-            padding: 8px 16px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
+        .footer-info a {
+            color: var(--accent);
             text-decoration: none;
-            transition: all 0.2s ease;
+        }
+
+        /* ═══════════════ BACK TO TOP ═══════════════ */
+        .back-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 48px;
+            height: 48px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            color: var(--text2);
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.2s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 100;
         }
 
-        .toc-chip:hover {
-            background: var(--accent-glow);
+        .back-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-top:hover {
+            background: var(--accent);
             border-color: var(--accent);
-            color: var(--accent);
+            color: white;
+            transform: translateY(-2px);
         }
 
-        .toc-chip span {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: var(--accent);
+        /* ═══════════════ SCROLL ANIMATIONS ═══════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container { padding: 30px 20px; }
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ═══════════════ RESPONSIVE ═══════════════ */
+        @media (max-width: 1024px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .hero { padding: 40px 0; }
+            .two-col { grid-template-columns: 1fr; }
         }
 
-        /* Print styles */
-        @media print {
-            body {
-                background: white;
-                color: #333;
-            }
-            body::before, body::after { display: none; }
-            .workflow-card, .stat-card, .action-box, .toc {
-                background: #f5f5f5;
-                border-color: #ddd;
-            }
-            .stat-number, .workflow-badge, .hero-logo {
-                color: #ff6b35;
-            }
+        @media (max-width: 768px) {
+            .wrap { padding: 0 20px; }
+            .hero { padding: 60px 0 40px; }
+            .toc-bar { flex-direction: column; align-items: flex-start; }
+            .part-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .part-count { margin-left: 0; }
+            .workflow-header { flex-direction: column; align-items: flex-start; }
+            .workflow-status { margin-top: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .hero-meta { flex-direction: column; gap: 8px; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Hero Section -->
+<div class="wrap">
+    <!-- ═══════════════ HERO ═══════════════ -->
     <section class="hero">
-        <div class="hero-badge">Mai - Juin 2026</div>
-        <h1>Workflows GHL</h1>
-        <p class="hero-subtitle">Synthese des workflows et templates emails crees dans GoHighLevel pour le programme Coaching Airbnb et la Conciergerie OPTIMI.</p>
-        <div class="hero-logo">OPTIMI GROUP</div>
-        <p class="hero-date">Document genere le 12 Juin 2026</p>
+        <div class="hero-mark">
+            <span>GHL</span>
+        </div>
+        <h1>Workflows GoHighLevel</h1>
+        <p class="hero-sub">Documentation complete des workflows et templates emails pour le programme Coaching Airbnb et la Conciergerie OPTIMI Group.</p>
+        <div class="hero-meta">
+            <span><span class="dot"></span> OPTIMI GROUP</span>
+            <span>Mai - Juin 2026</span>
+            <span>42 templates</span>
+        </div>
     </section>
 
-    <!-- Stats -->
-    <section class="stats-grid">
+    <!-- ═══════════════ STATS ═══════════════ -->
+    <section class="stats-grid reveal">
         <div class="stat-card">
             <div class="stat-number">8</div>
             <div class="stat-label">Workflows</div>
@@ -659,30 +747,31 @@
         </div>
     </section>
 
-    <!-- TOC -->
-    <nav class="toc">
-        <div class="toc-title">Navigation rapide</div>
-        <div class="toc-list">
-            <a href="#overview" class="toc-chip"><span>01</span> Vue d'ensemble</a>
-            <a href="#inbound" class="toc-chip"><span>02</span> Workflows Inbound</a>
-            <a href="#outbound" class="toc-chip"><span>03</span> Sequences Outbound</a>
-            <a href="#templates" class="toc-chip"><span>04</span> Templates</a>
-            <a href="#actions" class="toc-chip"><span>05</span> Plan d'action</a>
+    <!-- ═══════════════ TOC BAR ═══════════════ -->
+    <nav class="toc-bar">
+        <span class="toc-label">Navigation</span>
+        <div class="toc-chips">
+            <a href="#overview" class="toc-chip" style="--c: var(--p1);"><span class="num">01</span> Vue d'ensemble</a>
+            <a href="#inbound" class="toc-chip" style="--c: var(--p2);"><span class="num">02</span> Workflows Inbound</a>
+            <a href="#outbound" class="toc-chip" style="--c: var(--p3);"><span class="num">03</span> Sequences Outbound</a>
+            <a href="#templates" class="toc-chip" style="--c: var(--p4);"><span class="num">04</span> Templates</a>
+            <a href="#actions" class="toc-chip" style="--c: var(--p5);"><span class="num">05</span> Plan d'action</a>
         </div>
     </nav>
 
-    <!-- Section 1: Overview -->
-    <section id="overview">
-        <div class="section-header">
-            <span class="section-number">01</span>
-            <h2 class="section-title">Vue d'ensemble</h2>
+    <!-- ═══════════════ PART 01: OVERVIEW ═══════════════ -->
+    <section id="overview" class="part reveal" style="--c: var(--p1);">
+        <div class="part-head">
+            <span class="part-num">01</span>
+            <h2 class="part-title">Vue d'ensemble</h2>
+            <span class="part-count">8 workflows | 42 emails</span>
         </div>
 
         <div class="success-box">
             <strong>Total :</strong> 27 emails inbound (W1-W6) + 15 emails outbound (A/B/C) = <strong>42 templates</strong>
         </div>
 
-        <table class="summary-table" style="margin-bottom: 40px;">
+        <table class="summary-table">
             <tr>
                 <th>#</th>
                 <th>Workflow</th>
@@ -701,11 +790,12 @@
         </table>
     </section>
 
-    <!-- Section 2: Inbound Workflows -->
-    <section id="inbound">
-        <div class="section-header">
-            <span class="section-number">02</span>
-            <h2 class="section-title">Workflows Inbound</h2>
+    <!-- ═══════════════ PART 02: INBOUND WORKFLOWS ═══════════════ -->
+    <section id="inbound" class="part reveal" style="--c: var(--p2);">
+        <div class="part-head">
+            <span class="part-num">02</span>
+            <h2 class="part-title">Workflows Inbound</h2>
+            <span class="part-count">7 workflows | 27 emails</span>
         </div>
 
         <div class="workflow-grid">
@@ -966,11 +1056,12 @@
         </div>
     </section>
 
-    <!-- Section 3: Outbound -->
-    <section id="outbound">
-        <div class="section-header">
-            <span class="section-number">03</span>
-            <h2 class="section-title">Sequences Outbound</h2>
+    <!-- ═══════════════ PART 03: OUTBOUND SEQUENCES ═══════════════ -->
+    <section id="outbound" class="part reveal" style="--c: var(--p3);">
+        <div class="part-head">
+            <span class="part-num">03</span>
+            <h2 class="part-title">Sequences Outbound</h2>
+            <span class="part-count">3 sequences | 15 emails</span>
         </div>
 
         <div class="warning-box">
@@ -1037,16 +1128,17 @@
         </div>
     </section>
 
-    <!-- Section 4: Templates Summary -->
-    <section id="templates" style="margin-top: 60px;">
-        <div class="section-header">
-            <span class="section-number">04</span>
-            <h2 class="section-title">Recapitulatif des 42 Templates</h2>
+    <!-- ═══════════════ PART 04: TEMPLATES ═══════════════ -->
+    <section id="templates" class="part reveal" style="--c: var(--p4);">
+        <div class="part-head">
+            <span class="part-num">04</span>
+            <h2 class="part-title">Recapitulatif des 42 Templates</h2>
+            <span class="part-count">27 inbound | 15 outbound</span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div class="two-col">
             <div>
-                <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 16px;">Templates Inbound (27)</h3>
+                <h3 class="col-title" style="color: var(--p2);">Templates Inbound (27)</h3>
                 <table class="summary-table">
                     <tr><th>WF</th><th>ID</th><th>Timing</th><th>Sujet</th></tr>
                     <tr><td>W1</td><td>W1-E1</td><td>J0</td><td>Livraison du guide</td></tr>
@@ -1079,7 +1171,7 @@
                 </table>
             </div>
             <div>
-                <h3 style="font-size: 16px; color: var(--text-primary); margin-bottom: 16px;">Templates Outbound (15)</h3>
+                <h3 class="col-title" style="color: var(--p3);">Templates Outbound (15)</h3>
                 <table class="summary-table">
                     <tr><th>Seq</th><th>ID</th><th>J</th><th>Sujet</th></tr>
                     <tr><td>A</td><td>A-E1</td><td>0</td><td>Hook observation</td></tr>
@@ -1102,11 +1194,12 @@
         </div>
     </section>
 
-    <!-- Section 5: Global Action Plan -->
-    <section id="actions" style="margin-top: 60px;">
-        <div class="section-header">
-            <span class="section-number">05</span>
-            <h2 class="section-title">Plan d'Action Global</h2>
+    <!-- ═══════════════ PART 05: ACTION PLAN ═══════════════ -->
+    <section id="actions" class="part reveal" style="--c: var(--p5);">
+        <div class="part-head">
+            <span class="part-num">05</span>
+            <h2 class="part-title">Plan d'Action Global</h2>
+            <span class="part-count">15 actions</span>
         </div>
 
         <div class="action-plan-card">
@@ -1124,9 +1217,9 @@
             </table>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="two-col">
             <div class="workflow-card">
-                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--warning);">Actions secondaires</h3>
+                <h3 class="col-title" style="color: var(--p4);">Actions secondaires</h3>
                 <table class="summary-table">
                     <tr><th>#</th><th>WF</th><th>Action</th></tr>
                     <tr><td>6</td><td>W1</td><td><span class="priority-medium">Creer calculateur ROI</span></td></tr>
@@ -1137,7 +1230,7 @@
                 </table>
             </div>
             <div class="workflow-card">
-                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--info);">Actions a planifier</h3>
+                <h3 class="col-title" style="color: var(--p2);">Actions a planifier</h3>
                 <table class="summary-table">
                     <tr><th>#</th><th>WF</th><th>Action</th></tr>
                     <tr><td>11</td><td>Out</td><td><span class="priority-low">Setup domaine secondaire</span></td></tr>
@@ -1155,15 +1248,53 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ═══════════════ FOOTER ═══════════════ -->
     <footer class="footer">
         <div class="footer-logo">OPTIMI GROUP</div>
         <div class="footer-info">
-            Jean-Marc TAOUO | contactoptgroup@gmail.com | 06 12 78 49 32<br>
-            Document genere le 12 Juin 2026
+            Jean-Marc TAOUO | <a href="mailto:contactoptgroup@gmail.com">contactoptgroup@gmail.com</a> | 06 12 78 49 32<br>
+            Document genere le 13 Juin 2026
         </div>
     </footer>
 </div>
+
+<!-- Back to top -->
+<a href="#" class="back-top" id="backTop">↑</a>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+        }
+    });
+}, { threshold: 0.08 });
+
+reveals.forEach(el => observer.observe(el));
+
+// Back to top button
+const backTop = document.getElementById('backTop');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) {
+        backTop.classList.add('visible');
+    } else {
+        backTop.classList.remove('visible');
+    }
+});
+
+// Smooth scroll for anchors
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+</script>
 
 </body>
 </html>
